@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1. sql 구문의 재사용 :: sql, include -->
+
+<mapper namespace="UserMapper08">
+	<resultMap type="user" id="userSelectMap">
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="password" column="password" />
+		<result property="age" column="age" />
+		<result property="grade" column="grade" />
+		<result property="regDate" column="reg_date" />
+	</resultMap>
+	<!-- sql 구문의 모듈화 -->
+	<sql id="select-users">
+		SELECT
+		user_id, user_name, password,age,grade,reg_date
+		FROM users
+	</sql>
+	<sql id="orderby-userid-desc">
+		ORDER BY user_id DESC	
+	</sql>
+	<select id="sgetUserList01" parameterType="user"
+		resultMap="userSelectMap">
+		<include refid="select-users" />
+		WHERE password=#{password}
+	</select>
+
+	<select id="getUserList01" parameterType="user"
+		resultMap="userSelectMap">
+		<include refid="select-users"/>
+		<where>
+			<if test="userName != null"> user_name LIKE #{userName}</if>
+			<if test="age != null"> OR age LIKE #{age}</if>
+		</where>
+		<include refid="orderby-userid-desc"/> 
+	</select>
+</mapper>
