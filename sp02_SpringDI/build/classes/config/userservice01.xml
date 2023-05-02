@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 사용자 정의 빈:: id="user01" :: setter주입 :: 단순파라미터 값 id="01유저" age="01" -->
+<!-- id는 변수명이라고 생각하기 -->
+<bean id="user01" class="spring.service.domain.User">
+	<!-- 자바코드로 바뀌면 setUserId와 같음 객체: ref 값: value-->
+	<property name="userId" value="01유저" />
+	<property name="age" value="01" />
+</bean>
+
+<!-- API 빈을 만들기 id="password" class="java.lang.String" 생성자 주입 :: 단순파라미터 7777-->
+<bean id="password" class="java.lang.String">
+	<constructor-arg value="7777"></constructor-arg>
+</bean> 
+
+<bean id="user02" class="spring.service.domain.User">
+	<!-- 자바코드로 바뀌면 setUserId와 같음 객체: ref 값: value-->
+	<property name="userId" value="02유저" />
+	<property name="age" value="02" />
+	<property name="password" ref="password" />
+</bean>
+
+<!-- DI 없음 -->
+<bean id="user03" class="spring.service.domain.User" />
+
+<!-- 사용자정의 빈 :: id="user04" :: 생성자 값 주입 (04유저, 04, 0404) -->
+<bean id="user04" class="spring.service.domain.User">
+	<!-- public User(int age, String password, String userId) 순서가 안맞으면 BeanCreationException 에러  -->
+	<!-- 그것을 방지하기 위한 것이 index -->
+    <constructor-arg value="04유저" index = "2"/>
+    <constructor-arg value="04"  index = "0"/>
+    <constructor-arg value="0404"  index = "1"/>
+</bean>
+
+<!-- 사용자정의 빈 :: id="user05" :: 생성자 값 주입 (04유저, 04, 0404) -->
+<bean id="user05" class="spring.service.domain.User">
+    <constructor-arg value="05유저" type="String"/>
+    <constructor-arg value="05" type="int"/>
+    <constructor-arg value="0505" index="1"/>
+</bean>
+</beans>
